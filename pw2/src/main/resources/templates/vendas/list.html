@@ -8,7 +8,28 @@
             padding: 30px;
         }
     </style>
-    
+    <script>
+        function detalharVenda(botao){
+            let trVenda=botao.parentNode.parentNode;
+            let id = trVenda.querySelectorAll('input')[0].value;
+            let url = "/vendas/"+id+"/detalhes";
+            location.href = url;
+        }
+        function excluirVenda(botao){
+            let trVenda=botao.parentNode.parentNode;
+            let id = trVenda.querySelectorAll('input')[0].value;
+            
+            let xhr = new XMLHttpRequest();
+            xhr.onload = function(){
+                location.href=location.href;
+            }
+            xhr.open("DELETE","/vendas/"+id,false);
+            xhr.send();
+            
+            
+        }
+    </script>
+
     <table>
         <tr style="text-align:center;">
             <th>ID</th>
@@ -20,8 +41,8 @@
             <td><input type="text" th:value="${venda['id']}" readonly></td>
             <td><input type="text" th:value="${venda['data']}" readonly></td>
             <td><input type="text" th:value="${venda['valorTotal']}" readonly></td>
-            <td><button onclick="detalharVenda()">Detalhar</button></td>
-            <td><button onclick="excluirVenda()">Excluir</button></td>
+            <td><button onclick="detalharVenda(this)">Detalhar</button></td>
+            <td><button onclick="excluirVenda(this)">Excluir</button></td>
         </tr>
     </table>
 
