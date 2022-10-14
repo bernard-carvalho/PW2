@@ -1,5 +1,6 @@
 package br.edu.ifto.estudante.pw2.Entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Table(name="tb_venda") //notação opcional que informa o nome da tabela a ser criada
 @Scope(value=WebApplicationContext.SCOPE_SESSION) // notação que informa ao spring que essa classe, quando instanciada através da notação @autowired, deve ser persistida na sessão do usuário.
 @Component // notação que informa ao spring que a classe usará injeção de dependência (@autowired)
-public class Venda  {
+public class Venda implements Serializable {
 
     /*######################################
      * ATRIBUTOS
