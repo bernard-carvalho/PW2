@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.context.annotation.Scope;
@@ -43,7 +44,9 @@ public class Venda implements Serializable {
         @JoinColumn(name="cod_venda") //nome da coluna
         private List<ItemVenda> itensVenda = new ArrayList<>();
 
-        private Double valorTotal;
+        @OneToOne
+        @JoinColumn(name="cod_cliente")
+        private Cliente cliente;
 
     /*######################################
      * CONSTRUTORES
@@ -58,7 +61,14 @@ public class Venda implements Serializable {
     /*######################################
      * GETTER E SETTERS
      #######################################*/
-        
+        public Cliente getCliente() {
+            return this.cliente;
+        }
+
+        public void setCliente(Cliente cliente) {
+            this.cliente = cliente;
+        }
+     
         public Long getId() {
             return id;
         }
@@ -83,20 +93,12 @@ public class Venda implements Serializable {
             this.itensVenda = itensVenda;
         }
 
-        public Double getValorTotal() {
-            return this.valorTotal;
-        }
-
-        public void setValorTotal(Double valorTotal) {
-            this.valorTotal = valorTotal;
-        }
-
 
     /*######################################
      * METODOS
      #######################################*/
 
-        public Double getValor(){
+        public Double getValorTotal(){
             Double valorTotalDaVenda = 0.0;
             int tamanho_venda = itensVenda.size();
                 for(int i=0; i<tamanho_venda; i++){

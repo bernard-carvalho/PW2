@@ -1,0 +1,32 @@
+<div th:insert="fragments/header :: modelheader"></div>
+
+<p th:text="${venda}"></p>
+<style>
+    *{text-align: center;}
+</style>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Data</th>
+        <th>Cliente</th>
+        <th>Valor Total</th>
+    </tr>
+    <tr>
+        <td th:text="${venda['id']}"></td>
+        <td th:text="${venda['data']}"></td>
+        <td th:text="${venda['cliente']?.cpf}"></td>
+        <td th:text="${venda['valorTotal']}"></td>
+    </tr>
+    <tr>
+        <th colspan="4"> Itens</th>
+    </tr>
+    <tr>
+        <th>Id</th>
+        <th>Preco Unitário</th>
+        <th>Quantidade</th>
+        <th>Valor</th>
+    </tr>
+</table>
+
+<div th:insert="fragments/footer :: modelfooter"></div>

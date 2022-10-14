@@ -41,6 +41,12 @@ public class VendaController {
     @Autowired
     Venda carrinho;
 
+    @GetMapping("/{id}/detalhes")
+    public ModelAndView detalhar(ModelMap model, @PathVariable("id") Long id){
+            model.addAttribute("venda", repository.findById(id).get());
+        return new ModelAndView("/vendas/details",model);
+    }
+
     @GetMapping("/list")
     public ModelAndView listar(ModelMap model){
             model.addAttribute("vendas", repository.findAll());
