@@ -1,5 +1,7 @@
 package br.edu.ifto.estudante.pw2.Entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tb_produto")
-public class Produto {
+@Table(name="tb_produto") //notação opcional que informa o nome da tabela a ser criada
+public class Produto implements Serializable {
     /*######################################
     * ATRIBUTOS
     #######################################*/

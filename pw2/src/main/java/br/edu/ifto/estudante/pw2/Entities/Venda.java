@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 
@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Entity //notação que identifica a classe como entidade, isto é, uma tabela deve ser criada no banco para representá-la
 @Table(name="tb_venda") //notação opcional que informa o nome da tabela a ser criada
 @Scope(value=WebApplicationContext.SCOPE_SESSION) // notação que informa ao spring que essa classe, quando instanciada através da notação @autowired, deve ser persistida na sessão do usuário.
-@Component // notação que informa ao spring que a classe usará injeção de dependência (@autowired)
+//@Component // notação que informa ao spring que a classe usará injeção de dependência (@autowired)
 public class Venda implements Serializable {
 
     /*######################################
@@ -39,8 +39,8 @@ public class Venda implements Serializable {
         @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME)//notação que informa a formatação a ser gravada no banco
         private LocalDate data = LocalDate.now();
 
-        @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-        @JoinColumn(name="cod_item_venda")
+        @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)//notação que informa a multiplicidade do proximo atributo
+        @JoinColumn(name="cod_venda") //nome da coluna
         private List<ItemVenda> itensVenda = new ArrayList<>();
 
     /*######################################

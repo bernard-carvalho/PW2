@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="tb_item_venda")
+@Entity //notação que identifica a classe como entidade, isto é, uma tabela deve ser criada no banco para representá-la
+@Table(name="tb_item_venda") //notação opcional que informa o nome da tabela a ser criada
 public class ItemVenda implements Serializable {
     /*######################################
     * ATRIBUTOS
@@ -23,6 +25,8 @@ public class ItemVenda implements Serializable {
 
         private Integer quantidade;
 
+        @OneToOne
+        @JoinColumn(name="cod_produto")
         private Produto produto;
 
     /*######################################
@@ -62,6 +66,11 @@ public class ItemVenda implements Serializable {
      #######################################*/
         public void updatePrecoUnitario(){
             this.precoUnitario = produto.getPreco();
+        }
+
+        public Double getPrecoTotalItemVenda(){
+            Double precoTotalItemVenda = this.getPrecoUnitario()*this.getQuantidade();
+            return precoTotalItemVenda;
         }
     
 }
