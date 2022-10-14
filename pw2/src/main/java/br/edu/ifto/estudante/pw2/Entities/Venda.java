@@ -88,7 +88,7 @@ public class Venda implements Serializable {
             int tamanho_venda = itensVenda.size();
                 for(int i=0; i<tamanho_venda; i++){
                     ItemVenda item = itensVenda.get(i);
-                    Double precoItemVenda = item.getPrecoUnitario() * item.getQuantidade();
+                    Double precoItemVenda = item.getPrecoTotalItemVenda();
                     valorTotalDaVenda += precoItemVenda;
                 }
             return valorTotalDaVenda;
