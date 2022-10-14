@@ -19,13 +19,20 @@
         <td th:text="${venda['valorTotal']}"></td>
     </tr>
     <tr>
-        <th colspan="4"> Itens</th>
+        <th colspan="5"> Itens</th>
     </tr>
     <tr>
         <th>Id</th>
+        <th>Nome</th>
         <th>Preco Unitário</th>
         <th>Quantidade</th>
         <th>Valor</th>
+    </tr>
+    <tr th:each="item : ${venda.itensVenda}">
+        <td th:text="${item.produto.id}"></td>
+        <td th:text="${item.produto.nome}"></td>
+        <td th:text="${item.precoUnitario}"></td>
+        <td th:text="${item.precoTotalItemVenda}"></td>
     </tr>
 </table>
 
