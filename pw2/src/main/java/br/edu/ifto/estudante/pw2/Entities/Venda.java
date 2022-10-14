@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 
@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Entity //notação que identifica a classe como entidade, isto é, uma tabela deve ser criada no banco para representá-la
 @Table(name="tb_venda") //notação opcional que informa o nome da tabela a ser criada
 @Scope(value=WebApplicationContext.SCOPE_SESSION) // notação que informa ao spring que essa classe, quando instanciada através da notação @autowired, deve ser persistida na sessão do usuário.
-//@Component // notação que informa ao spring que a classe usará injeção de dependência (@autowired)
+@Component // notação que informa ao spring que a classe usará injeção de dependência (@autowired)
 public class Venda implements Serializable {
 
     /*######################################
@@ -43,11 +43,15 @@ public class Venda implements Serializable {
         @JoinColumn(name="cod_venda") //nome da coluna
         private List<ItemVenda> itensVenda = new ArrayList<>();
 
+        private Double valorTotal;
+
     /*######################################
      * CONSTRUTORES
      #######################################*/
     
         public Venda() {
+            //this.getClass().getDeclaredFields()[0].getType().getName
+            this.getClass().getDeclaredMethods()[0].getName();
         }
 
 
@@ -78,6 +82,15 @@ public class Venda implements Serializable {
         public void setItensVenda(List<ItemVenda> itensVenda) {
             this.itensVenda = itensVenda;
         }
+
+        public Double getValorTotal() {
+            return this.valorTotal;
+        }
+
+        public void setValorTotal(Double valorTotal) {
+            this.valorTotal = valorTotal;
+        }
+
 
     /*######################################
      * METODOS

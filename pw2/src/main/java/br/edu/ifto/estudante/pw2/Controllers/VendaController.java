@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +19,35 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifto.estudante.pw2.Entities.Venda;
+import br.edu.ifto.estudante.pw2.Repositories.ProdutoRepository;
 import br.edu.ifto.estudante.pw2.Repositories.VendaRepository;
 
+@Transactional
 @RestController
-@RequestMapping("/vendas")
+@RequestMapping("vendas")
+@Scope(value=WebApplicationContext.SCOPE_REQUEST)
 public class VendaController {
 
     @Autowired
-
     VendaRepository repository;
+
+    @Autowired
+    ProdutoRepository produtoRepository;
+
+    @Autowired
+    Venda carrinho;
+
+    @GetMapping("/list")
+    public ModelAndView listar(ModelMap model){
+            model.addAttribute("vendas", repository.findAll());
+        return new ModelAndView("/vendas/list", model);
+    }
+
+
 
     @GetMapping
     public ResponseEntity<List<Venda>> getAll() {
