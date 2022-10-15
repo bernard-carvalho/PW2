@@ -26,7 +26,7 @@ and open the template in the editor.
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Home </a>
+                  <a class="nav-link" href="/">Home </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Produtos</a>
@@ -43,7 +43,7 @@ and open the template in the editor.
 
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                    <span th:text="'['+${session.venda.itensVenda.size}+']Carrinho'"></span>
+                    <span th:text="'['+(${session?.venda?.itensVenda?.size}?:'0')+']Carrinho'"></span>
                   </a>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Finalizar compra</a>
