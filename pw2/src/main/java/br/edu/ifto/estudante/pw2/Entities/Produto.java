@@ -27,6 +27,10 @@ public class Produto implements Serializable {
      * CONSTRUTORES
      #######################################*/
 
+     public Produto(){
+
+     }
+
      /*######################################
      * GETTER E SETTERS
      #######################################*/

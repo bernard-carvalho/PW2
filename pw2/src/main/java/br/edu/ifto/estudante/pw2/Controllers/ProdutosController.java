@@ -7,14 +7,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifto.estudante.pw2.Entities.Produto;
 import br.edu.ifto.estudante.pw2.Repositories.ProdutoRepository;
@@ -25,6 +28,12 @@ public class ProdutosController {
 
     @Autowired
     ProdutoRepository repository;
+
+    @GetMapping("/list")
+    public ModelAndView listar(ModelMap model){
+            model.addAttribute("produtos", repository.findAll());
+        return new ModelAndView("/produtos/list", model);
+    }
 
     @GetMapping
     public ResponseEntity<List<Produto>> getAll() {
@@ -54,13 +63,10 @@ public class ProdutosController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> create(@RequestBody Produto item) {
-        try {
-            Produto savedItem = repository.save(item);
-            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
+    @ModelAttribute(value = "Produto")
+    public ModelAndView create(Produto produto) {
+        Produto savedItem = repository.save(produto);
+        return new ModelAndView("redirect:/produtos/list");
     }
 
     @PutMapping("{id}")
