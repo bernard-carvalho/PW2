@@ -74,7 +74,9 @@ public class ProdutosController {
         Optional<Produto> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             Produto existingItem = existingItemOptional.get();
-            System.out.println("TODO for developer - update logic is unique to entity and must be implemented manually.");
+            existingItem.setNome(item.getNome());
+            existingItem.setPreco(item.getPreco());
+            //System.out.println("TODO for developer - update logic is unique to entity and must be implemented manually.");
             //existingItem.setSomeField(item.getSomeField());
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {

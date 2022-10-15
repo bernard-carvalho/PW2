@@ -53,8 +53,6 @@ public class VendaController {
         return new ModelAndView("/vendas/list", model);
     }
 
-
-
     @GetMapping
     public ResponseEntity<List<Venda>> getAll() {
         try {
