@@ -28,6 +28,10 @@ public abstract class Cliente {
      * CONSTRUTORES
      #######################################*/
 
+     public Cliente(){
+
+     }
+
 
 
      /*######################################

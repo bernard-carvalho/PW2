@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,21 +16,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import br.edu.ifto.estudante.pw2.Entities.Produto;
-import br.edu.ifto.estudante.pw2.Repositories.ProdutoRepository;
+import br.edu.ifto.estudante.pw2.Entities.Cliente;
+import br.edu.ifto.estudante.pw2.Repositories.ClienteRepository;
 
 @RestController
-@RequestMapping("produto")
-class resourceNameController {
+@RequestMapping("/clientes")
+class ClienteController {
 
     @Autowired
-    ProdutoRepository repository;
+    ClienteRepository repository;
+
+    @GetMapping("list")
+    public ModelAndView listar(ModelMap model){
+        model.addAttribute("clientes",repository.findAll());
+        return new ModelAndView("/clientes/list", model);
+    }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> getAll() {
+    public ResponseEntity<List<Cliente>> getAll() {
         try {
-            List<Produto> items = new ArrayList<Produto>();
+            List<Cliente> items = new ArrayList<Cliente>();
 
             repository.findAll().forEach(items::add);
 
@@ -43,8 +51,8 @@ class resourceNameController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Produto> getById(@PathVariable("id") Long id) {
-        Optional<Produto> existingItemOptional = repository.findById(id);
+    public ResponseEntity<Cliente> getById(@PathVariable("id") Long id) {
+        Optional<Cliente> existingItemOptional = repository.findById(id);
 
         if (existingItemOptional.isPresent()) {
             return new ResponseEntity<>(existingItemOptional.get(), HttpStatus.OK);
@@ -54,9 +62,9 @@ class resourceNameController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> create(@RequestBody Produto item) {
+    public ResponseEntity<Cliente> create(@RequestBody Cliente item) {
         try {
-            Produto savedItem = repository.save(item);
+            Cliente savedItem = repository.save(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -64,11 +72,12 @@ class resourceNameController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody Produto item) {
-        Optional<Produto> existingItemOptional = repository.findById(id);
+    public ResponseEntity<Cliente> update(@PathVariable("id") Long id, @RequestBody Cliente item) {
+        Optional<Cliente> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
-            Produto existingItem = existingItemOptional.get();
-            System.out.println("TODO for developer - update logic is unique to entity and must be implemented manually.");
+            Cliente existingItem = existingItemOptional.get();
+            
+            existingItem.setEmail(item.getEmail());
             //existingItem.setSomeField(item.getSomeField());
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {

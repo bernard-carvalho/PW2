@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,16 +23,16 @@ import br.edu.ifto.estudante.pw2.Entities.ClientePF;
 import br.edu.ifto.estudante.pw2.Repositories.ClientePFRepository;
 
 @RestController
-@RequestMapping("/clientes-pf")
-public class ClientesPFController {
+@RequestMapping("/clientes/pf")
+class ClientesPFController {
 
     @Autowired
     ClientePFRepository repository;
 
     @GetMapping("/list")
     public ModelAndView listar(ModelMap model){
-            model.addAttribute("clientes", repository.findAll());
-        return new ModelAndView("/clientes/list", model);
+        model.addAttribute("clientespf",repository.findAll());
+        return new ModelAndView("/clientes/pf/list",model);
     }
 
     @GetMapping
@@ -60,7 +61,7 @@ public class ClientesPFController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+/*
     @PostMapping
     public ResponseEntity<ClientePF> create(@RequestBody ClientePF item) {
         try {
@@ -70,15 +71,22 @@ public class ClientesPFController {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
+ */  
+    @PostMapping
+    @ModelAttribute(value = "ClientePF")
+    public ModelAndView create(ClientePF clientepf) {
+        repository.save(clientepf);
+        return new ModelAndView("redirect:/clientes/pf/list");
+    }
 
     @PutMapping("{id}")
     public ResponseEntity<ClientePF> update(@PathVariable("id") Long id, @RequestBody ClientePF item) {
         Optional<ClientePF> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             ClientePF existingItem = existingItemOptional.get();
+            existingItem.setEmail(item.getEmail());
+            existingItem.setCpf(item.getCpf());
             //existingItem.setSomeField(item.getSomeField());
-                existingItem.setEmail(item.getEmail());
-                existingItem.setCpf(item.getCpf());
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -65,7 +65,7 @@ public class ProdutosController {
     @PostMapping
     @ModelAttribute(value = "Produto")
     public ModelAndView create(Produto produto) {
-        Produto savedItem = repository.save(produto);
+        repository.save(produto);
         return new ModelAndView("redirect:/produtos/list");
     }
 
@@ -76,7 +76,7 @@ public class ProdutosController {
             Produto existingItem = existingItemOptional.get();
             existingItem.setNome(item.getNome());
             existingItem.setPreco(item.getPreco());
-            //System.out.println("TODO for developer - update logic is unique to entity and must be implemented manually.");
+            
             //existingItem.setSomeField(item.getSomeField());
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {

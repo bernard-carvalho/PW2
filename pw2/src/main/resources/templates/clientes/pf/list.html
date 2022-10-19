@@ -1,0 +1,72 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<style>
+    *{text-align: center;} .hidden{display:none;}
+    table tr td input{
+        text-align:center;
+    }
+    table th{
+        padding: 30px;
+    }
+</style>
+<script>
+    function alterar(botao){
+        
+        let cliente = {
+            id:botao.parentNode.parentNode.querySelectorAll("input")[0].value,
+            email:botao.parentNode.parentNode.querySelectorAll("input")[1].value,
+            cpf:botao.parentNode.parentNode.querySelectorAll("input")[2].value
+        };
+        xhr = new XMLHttpRequest;
+        let url = "/clientes/pf/"+cliente.id;
+        xhr.open("PUT",url,true);
+        xhr.onload=function(){
+            alert("Alteração realizada");
+            document.location.reload();          
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(cliente));
+        return false;
+    }
+    function excluir(botao){
+        let cliente = {
+            id:botao.parentNode.parentNode.querySelectorAll("input")[0].value,
+            email:botao.parentNode.parentNode.querySelectorAll("input")[1].value,
+            cpf:botao.parentNode.parentNode.querySelectorAll("input")[2].value
+        };
+        let url = "/clientes/pf/"+cliente.id;
+        let xhr = new XMLHttpRequest;
+        xhr.open("DELETE", url, true);
+        xhr.onload=function(){
+           alert("Elemento excluido");
+           document.location.reload(); 
+        }
+        xhr.send(JSON.stringify(cliente));
+        return false;
+    }
+</script>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>E-mail</th>
+        <th>CPF</th>
+        <th colspan="2">Ações</th>
+    </tr>
+    <tr th:each="cliente : ${clientespf}">
+        <td><input type="text" readonly th:value="${cliente.id}"></td>
+        <td><input type="text" th:value="${cliente.email}"></td>
+        <td><input type="text" th:value="${cliente.cpf}"></td>
+        <td><button onclick="alterar(this)">Alterar</button></td>
+        <td><button onclick="excluir(this)">Excluir</button></td>
+    </tr>
+    <tr>
+        <form action="/clientes/pf" method="POST" th:object="${ClientePF}">
+            <td></td>
+            <td><input type="text" name="email"></td>
+            <td><input type="text" name="cpf"></td>
+            <td colspan="2"><input type="submit" value="Adicionar"></td>
+        </form>
+    </tr>
+</table>
+
+<div th:insert="fragments/footer :: modelfooter"></div>

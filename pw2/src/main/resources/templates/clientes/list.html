@@ -1,5 +1,24 @@
 <div th:insert="fragments/header :: modelheader"></div>
-
-
-
+<style>
+    *{text-align: center;} .hidden{display:none;}
+    table tr td input{
+        text-align:center;
+    }
+    table th{
+        padding: 30px;
+    }
+</style>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>E-mail</th>
+        <th colspan="2">Ações</th>
+    </tr>
+    <tr th:each="cliente : ${clientes}">
+        <td><input readonly name="id" th:value="${cliente.id}"></td>
+        <td><input name="email" th:value="${cliente.email}"></td>
+        <td><button>Alterar</button></td>
+        <td><button>Excluir</button></td>
+    </tr>
+</table>
 <div th:insert="fragments/footer :: modelfooter"></div>
