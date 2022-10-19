@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,16 +14,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import br.edu.ifto.estudante.pw2.Entities.Cliente;
+import br.edu.ifto.estudante.pw2.Entities.ItemVenda;
+import br.edu.ifto.estudante.pw2.Entities.Produto;
 import br.edu.ifto.estudante.pw2.Entities.Venda;
+import br.edu.ifto.estudante.pw2.Repositories.ClienteRepository;
 import br.edu.ifto.estudante.pw2.Repositories.ProdutoRepository;
 import br.edu.ifto.estudante.pw2.Repositories.VendaRepository;
 
@@ -39,6 +47,9 @@ public class VendaController {
     ProdutoRepository produtoRepository;
 
     @Autowired
+    ClienteRepository clienteRepository;
+
+    @Autowired
     Venda carrinho;
 
     @GetMapping("/{id}/detalhes")
@@ -51,6 +62,24 @@ public class VendaController {
     public ModelAndView listar(ModelMap model){
             model.addAttribute("vendas", repository.findAll());
         return new ModelAndView("/vendas/list", model);
+    }
+
+    @PostMapping("/carrinho/add/{qntdProduto}")
+    public RedirectView addItemNocarrinho(@PathVariable("qntdProduto") Integer qntdProduto, @RequestBody Produto produto){
+        ItemVenda itemVenda = new ItemVenda();
+        itemVenda.setProduto(produto);
+        itemVenda.setQuantidade(qntdProduto);
+        itemVenda.setPrecoUnitario(produto.getPreco());
+        carrinho.getItensVenda().add(itemVenda);
+        return new RedirectView("/carrinho/list");
+    }
+
+
+    @GetMapping("/carrinho")
+    public ModelAndView listCarrinho(ModelMap model){
+        model.addAttribute("carrinho", carrinho);
+        model.addAttribute("clientes",clienteRepository.findAll());
+        return new ModelAndView("/carrinho/list", model);
     }
 
     @GetMapping

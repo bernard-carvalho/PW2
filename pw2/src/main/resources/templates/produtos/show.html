@@ -1,0 +1,56 @@
+<div th:insert="fragments/header :: modelheader"></div>
+
+<style>
+    *{text-align: center;} .hidden{display:none;}
+    table tr td input{
+        text-align:center;
+    }
+    table th{
+        padding: 30px;
+    }
+    div.col-sm-6{
+        margin:10px;
+        padding: 30px;
+       background-color: #ddd; 
+    }
+</style>
+<script>
+    function comprar(botao){
+        let div = botao.parentNode;
+        let id = div.querySelectorAll("input")[0].value;
+        let nome = div.querySelectorAll("input")[1].value;
+        let preco = div.querySelectorAll("input")[2].value;
+        let quantidade = div.querySelectorAll("input")[3].value;
+        let produto={
+            id:id,
+            nome:nome,
+            preco:preco,
+        };
+        console.log(produto);
+        let url = "/vendas/carrinho/add/"+quantidade;
+        console.log(url);
+
+        xhr = new XMLHttpRequest;
+        xhr.open("POST",url,true);
+        xhr.onload=function(){
+            
+            document.location = "/vendas/carrinho";
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(produto));
+    }
+</script>
+
+<div class="container">
+    <div>
+      <div  th:each="produto : ${produtos}" class="col-sm-6">
+            <input type="hidden" th:value="${produto.id}" name="id">
+            <p>Nome do Produto</p><p></p><input th:value="${produto.nome}" name="nome" readonly></p>
+            <p>Preço do Produto</p><p></p><input th:value="${produto.preco}" name="preco" readonly></p>
+            <p>Quantidade</p><p></p><input value="1" type="number" name="quantidade" min="1"></p>
+            <button class="btn btn-primary" style="width:100%;" onclick="comprar(this)">COMPRAR</button>
+      </div>
+    </div>
+</div>
+
+<div th:insert="fragments/footer :: modelfooter"></div>

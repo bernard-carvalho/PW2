@@ -29,6 +29,12 @@ public class ProdutosController {
     @Autowired
     ProdutoRepository repository;
 
+    @GetMapping("/show")
+    public ModelAndView show(ModelMap model){
+        model.addAttribute("produtos",repository.findAll());
+        return new ModelAndView("/produtos/show",model);
+    }
+
     @GetMapping("/list")
     public ModelAndView listar(ModelMap model){
             model.addAttribute("produtos", repository.findAll());

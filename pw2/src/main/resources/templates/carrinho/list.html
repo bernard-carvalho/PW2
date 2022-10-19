@@ -1,0 +1,55 @@
+<div th:insert="fragments/header :: modelheader"></div>
+
+<style>
+    *{text-align: center;} .hidden{display:none;}
+    table tr td input{
+        text-align:center;
+    }
+    table th{
+        padding: 30px;
+    }
+</style>
+
+<table>
+    <tr>
+        <th>NomeProduto</th>
+        <th>Valor Unitario</th>
+        <th>Quantidade</th>
+        <th>Valor total</th>
+    </tr>
+    
+    <tr th:each="item : ${carrinho.itensVenda}">
+        
+        <td><input type="text" name="id" th:value="${item.produto.nome}" readonly></td>
+        <td><input type="text" name="id" th:value="${item.precoUnitario}" readonly></td>
+        <td><input type="text" name="id" th:value="${item.quantidade}" readonly></td>
+        <td><input type="text" name="id" th:value="${item.precoTotalItemVenda}" readonly></td>
+        
+    </tr>
+    <tr>
+        <th colspan="4">Valor Total</th>
+    </tr>
+    <tr>
+        <td colspan="4"><span th:text="${carrinho}"></span></td>
+    </tr>
+    <tr>
+        <td colspan="4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm" style="width:100%;">Finalizar venda</button></td>
+    </tr>
+</table>
+
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" style="padding:30px;">
+      <h3>Selecionar E-mail Cliente:</h3>
+      <select name="id_usuario" id="id_usuario">
+        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.email}"></option>
+      </select>
+      <br>
+      <button class="btn btn-primary">CONFIRMAR</button>
+    </div>
+  </div>
+</div>
+
+
+<div th:insert="fragments/footer :: modelfooter"></div>
