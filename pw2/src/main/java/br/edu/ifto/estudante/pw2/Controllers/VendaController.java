@@ -66,11 +66,23 @@ public class VendaController {
 
     @PostMapping("/carrinho/add/{qntdProduto}")
     public RedirectView addItemNocarrinho(@PathVariable("qntdProduto") Integer qntdProduto, @RequestBody Produto produto){
-        ItemVenda itemVenda = new ItemVenda();
-        itemVenda.setProduto(produto);
-        itemVenda.setQuantidade(qntdProduto);
-        itemVenda.setPrecoUnitario(produto.getPreco());
-        carrinho.getItensVenda().add(itemVenda);
+        boolean found = false;
+        for(int i=0;i<carrinho.getItensVenda().size();i++){
+            if(carrinho.getItensVenda().get(i).getProduto().getId()==produto.getId())
+            {
+                carrinho.getItensVenda().get(i).setQuantidade(qntdProduto);
+                found=true;
+                break;
+            }
+        }
+        if(!found)
+        {
+            ItemVenda itemVenda = new ItemVenda();
+            itemVenda.setProduto(produto);
+            itemVenda.setQuantidade(qntdProduto);
+            itemVenda.setPrecoUnitario(produto.getPreco());
+            carrinho.getItensVenda().add(itemVenda);
+        }
         return new RedirectView("/carrinho/list");
     }
 
