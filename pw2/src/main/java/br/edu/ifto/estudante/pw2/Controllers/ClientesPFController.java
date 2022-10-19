@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
 import br.edu.ifto.estudante.pw2.Entities.ClientePF;
 import br.edu.ifto.estudante.pw2.Repositories.ClientePFRepository;
 
@@ -24,6 +27,12 @@ public class ClientesPFController {
 
     @Autowired
     ClientePFRepository repository;
+
+    @GetMapping("/list")
+    public ModelAndView listar(ModelMap model){
+            model.addAttribute("clientes", repository.findAll());
+        return new ModelAndView("/clientes/list", model);
+    }
 
     @GetMapping
     public ResponseEntity<List<ClientePF>> getAll() {
@@ -67,8 +76,9 @@ public class ClientesPFController {
         Optional<ClientePF> existingItemOptional = repository.findById(id);
         if (existingItemOptional.isPresent()) {
             ClientePF existingItem = existingItemOptional.get();
-            System.out.println("TODO for developer - update logic is unique to entity and must be implemented manually.");
             //existingItem.setSomeField(item.getSomeField());
+                existingItem.setEmail(item.getEmail());
+                existingItem.setCpf(item.getCpf());
             return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
