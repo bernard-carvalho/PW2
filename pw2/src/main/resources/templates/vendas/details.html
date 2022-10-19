@@ -2,20 +2,20 @@
 
 <p th:text="${venda}"></p>
 <style>
-    *{text-align: center;}
+    *{text-align: center;} td, th   {border:1px solid black;}
 </style>
 
 <table>
     <tr>
         <th>ID</th>
         <th>Data</th>
-        <th>Cliente</th>
+        <th colspan="2">E-mail cliente</th>
         <th>Valor Total</th>
     </tr>
     <tr>
         <td th:text="${venda['id']}"></td>
         <td th:text="${venda['data']}"></td>
-        <td th:text="${venda['cliente']?.cpf}"></td>
+        <td colspan="2" th:text="${venda['cliente'].email}"></td>
         <td th:text="${venda['valorTotal']}"></td>
     </tr>
     <tr>
@@ -32,6 +32,7 @@
         <td th:text="${item.produto.id}"></td>
         <td th:text="${item.produto.nome}"></td>
         <td th:text="${item.precoUnitario}"></td>
+        <td th:text="${item.quantidade}"></td>
         <td th:text="${item.precoTotalItemVenda}"></td>
     </tr>
 </table>

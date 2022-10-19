@@ -42,16 +42,18 @@ public abstract class Cliente {
             this.id = id;
         }
 
-        public String getContato() {
+        public String getEmail() {
             return this.email;
         }
 
-        public void setContato(String contato) {
+        public void setEmail(String contato) {
             this.email = contato;
         }
 
     /*######################################
      * METODOS
      #######################################*/
+
+     
     
 }
