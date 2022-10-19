@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
 
@@ -27,9 +28,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import br.edu.ifto.estudante.pw2.Entities.Cliente;
+import br.edu.ifto.estudante.pw2.Entities.ClientePF;
 import br.edu.ifto.estudante.pw2.Entities.ItemVenda;
 import br.edu.ifto.estudante.pw2.Entities.Produto;
 import br.edu.ifto.estudante.pw2.Entities.Venda;
+import br.edu.ifto.estudante.pw2.Repositories.ClientePFRepository;
 import br.edu.ifto.estudante.pw2.Repositories.ClienteRepository;
 import br.edu.ifto.estudante.pw2.Repositories.ProdutoRepository;
 import br.edu.ifto.estudante.pw2.Repositories.VendaRepository;
@@ -48,6 +51,9 @@ public class VendaController {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    ClientePFRepository clientePFRepository;
 
     @Autowired
     Venda carrinho;
@@ -70,8 +76,11 @@ public class VendaController {
         for(int i=0;i<carrinho.getItensVenda().size();i++){
             if(carrinho.getItensVenda().get(i).getProduto().getId()==produto.getId())
             {
-                carrinho.getItensVenda().get(i).setQuantidade(qntdProduto);
                 found=true;
+                if(qntdProduto!=0)
+                carrinho.getItensVenda().get(i).setQuantidade(qntdProduto);
+                if(qntdProduto==0)
+                    carrinho.getItensVenda().remove(i);
                 break;
             }
         }
@@ -83,8 +92,11 @@ public class VendaController {
             itemVenda.setPrecoUnitario(produto.getPreco());
             carrinho.getItensVenda().add(itemVenda);
         }
-        return new RedirectView("/carrinho/list");
+        return new RedirectView("vendas/carrinho");
     }
+    
+    
+   
 
 
     @GetMapping("/carrinho")
@@ -92,6 +104,21 @@ public class VendaController {
         model.addAttribute("carrinho", carrinho);
         model.addAttribute("clientes",clienteRepository.findAll());
         return new ModelAndView("/carrinho/list", model);
+    }
+
+    @GetMapping("/carrinho/apagar")
+    public RedirectView resetar(HttpSession sessao){
+        sessao.invalidate();
+        return new RedirectView("/");
+    }
+
+    @PostMapping("/carrinho/finalizar")
+    public RedirectView finalizarVenda(ModelMap model, @RequestBody ClientePF cliente, HttpSession sessao){
+        ClientePF cliente2 = clientePFRepository.findById(cliente.getId()).get();
+        carrinho.setCliente(cliente2);
+        repository.save(carrinho);
+        sessao.invalidate();
+        return new RedirectView("/");
     }
 
     @GetMapping
