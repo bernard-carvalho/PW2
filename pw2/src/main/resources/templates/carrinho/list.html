@@ -43,7 +43,7 @@
         xhr=new XMLHttpRequest;
         xhr.open("POST",url,true);
         xhr.onload=function(){
-            document.location="/vendas/list";
+            document.innerHTML=xhr.responseText;
         }
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(cliente));
@@ -91,6 +91,7 @@
     </div>
   </div>
 </div>
+<div class="alert alert-danger" th:if="${erros}" th:each="erro : ${erros}" th:errors="${erros.*}"></div>
 
 
 <div th:insert="fragments/footer :: modelfooter"></div>

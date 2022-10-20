@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="tb_produto") //notação opcional que informa o nome da tabela a ser criada
@@ -24,6 +25,7 @@ public class Produto implements Serializable {
         @NotBlank(message = "nome não pode ser nulo")
         private String nome;
 
+        @NotNull(message="Preco não pode ser nulo")
         @Min(value=0, message="preco deve ser superior a {1}")
         private Double preco;
 

@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifto.estudante.pw2.Entities.ClientePF;
 import br.edu.ifto.estudante.pw2.Repositories.ClientePFRepository;
@@ -74,7 +78,19 @@ class ClientesPFController {
  */  
     @PostMapping
     @ModelAttribute(value = "ClientePF")
-    public ModelAndView create(ClientePF clientepf) {
+    public ModelAndView create(@Valid ClientePF clientepf, BindingResult result, ModelMap model) {
+        if(result.hasErrors()){
+            System.out.println("RESULTADO APRESENTOU ERROS");
+            model.addAttribute("clientespf", repository.findAll());
+
+            List<String> erros = new ArrayList<>();
+            for(int i=0; i<result.getAllErrors().size();i++){
+                System.out.println(result.getAllErrors().get(i).getDefaultMessage());
+                erros.add(result.getAllErrors().get(i).getDefaultMessage());
+            }
+            model.addAttribute("erros",erros);
+            return new ModelAndView("/clientes/pf/list", model);
+        }
         repository.save(clientepf);
         return new ModelAndView("redirect:/clientes/pf/list");
     }

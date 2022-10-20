@@ -6,12 +6,14 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import br.edu.ifto.estudante.pw2.Entities.Cliente;
@@ -110,8 +113,28 @@ public class VendaController {
     }
 
     @PostMapping("/carrinho/finalizar")
-    public RedirectView finalizarVenda(ModelMap model, @RequestBody ClientePF cliente, HttpSession sessao){
+    public RedirectView finalizarVenda(ModelMap model, @RequestBody @Valid ClientePF cliente, BindingResult result,HttpSession sessao, RedirectAttributes atributos){
         ClientePF cliente2 = clientePFRepository.findById(cliente.getId()).get();
+        
+
+        List<String> erros =  new ArrayList<>();
+        if(carrinho.getItensVenda().size()==0){
+            System.out.println("\nENTROU AQUI\n");
+            erros.add("Venda vazia não será realizada");
+            System.out.println(erros.size());
+        }
+        if(result.hasErrors()){
+            for(int i=0;i<result.getErrorCount();i++){
+                if(!"CPF".equals(result.getFieldErrors().get(i).getField()))
+                    erros.add(result.getAllErrors().get(i).getDefaultMessage().toString());
+            }
+        }
+        if(erros.size()!=0){
+            System.out.println("\n\nTAMBEM ENTROU AQUI");
+            System.out.println(erros.size());
+            atributos.addFlashAttribute("erros",erros);
+            return new RedirectView("/vendas/carrinho");
+        }
         carrinho.setCliente(cliente2);
         repository.save(carrinho);
         sessao.invalidate();
@@ -146,8 +169,12 @@ public class VendaController {
     }
 
     @PostMapping
-    public ResponseEntity<Venda> create(@RequestBody Venda item) {
+    public ResponseEntity<Venda> create(@RequestBody @Valid Venda item, BindingResult result, ModelMap model) {
         try {
+            if(result.hasErrors()){
+                model.addAttribute("vendas", repository.findAll());
+            }
+
             Venda savedItem = repository.save(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {

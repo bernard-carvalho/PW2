@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,6 +27,7 @@ public abstract class Cliente {
         @GenericGenerator(name = "inc", strategy = "increment")
         private Long id;
 
+        @NotBlank(message="Email nao pode estar em branco")
         private String email;
 
         @OneToMany(mappedBy = "cliente")
