@@ -42,14 +42,14 @@
     }
 </script>
 
-<!-- <div class="container"> -->
-      <div  th:each="produto : ${produtos}" class="col-sm-6">
+<div class="container">
+      <div  th:each="produto : ${produtos}">
             <input type="hidden" th:value="${produto.id}" name="id">
             <p>Nome do Produto</p><p></p><input th:value="${produto.nome}" name="nome" readonly></p>
             <p>Preço do Produto</p><p></p><input th:value="${produto.preco}" name="preco" readonly></p>
             <p>Quantidade</p><p></p><input value="1" type="number" name="quantidade" min="1"></p>
             <button class="btn btn-primary" style="width:100%;" onclick="comprar(this)">COMPRAR</button>
       </div>
-<!-- </div> -->
+</div>
 
 <div th:insert="fragments/footer :: modelfooter"></div>

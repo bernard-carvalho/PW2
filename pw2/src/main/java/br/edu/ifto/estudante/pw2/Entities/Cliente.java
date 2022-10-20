@@ -2,6 +2,7 @@ package br.edu.ifto.estudante.pw2.Entities;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,8 +28,10 @@ public abstract class Cliente {
 
         private String email;
 
-        //@OneToMany(mappedBy = "Cliente")
-        //private ArrayList<Venda> vendas;
+        @OneToMany(mappedBy = "cliente")
+        private List<Venda> vendas;
+
+        
     
     /*######################################
      * CONSTRUTORES
@@ -43,6 +46,14 @@ public abstract class Cliente {
      /*######################################
      * GETTER E SETTERS
      #######################################*/
+
+        public List<Venda> getVendas() {
+            return this.vendas;
+        }
+
+        public void setVendas(List<Venda> vendas) {
+            this.vendas = vendas;
+        }   
 
         public Long getId() {
             return this.id;

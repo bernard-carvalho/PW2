@@ -62,6 +62,7 @@ public class Venda implements Serializable {
     /*######################################
      * GETTER E SETTERS
      #######################################*/
+        
         public Cliente getCliente() {
             return this.cliente;
         }

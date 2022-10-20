@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import br.edu.ifto.estudante.pw2.Entities.Cliente;
 import br.edu.ifto.estudante.pw2.Entities.ClientePF;
 import br.edu.ifto.estudante.pw2.Entities.ItemVenda;
 import br.edu.ifto.estudante.pw2.Entities.Produto;
@@ -189,7 +190,9 @@ public class VendaController {
                 clienteEspecifico.add(vendas.get(i));
             }
         }
-        model.addAttribute("vendas", clienteEspecifico);
+        //model.addAttribute("vendas", clienteEspecifico);
+        Cliente cliente = clienteRepository.findById(idCliente).get();
+        model.addAttribute("vendas", cliente.getVendas());
         return new ModelAndView("/vendas/list",model);
     } /**/
 }
