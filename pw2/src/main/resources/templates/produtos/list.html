@@ -45,7 +45,7 @@
         <th>Preço</th>
         <th>Ações</th>
     </tr>
-    <tr th:each="produto : ${produtos}">
+    <tr th:each="produto : ${produtos}" >
         <form>
             <td><input type="number" th:value="${produto.id}" name="id" class="hidden"></td>
             <td><input type="text" th:value="${produto.nome}" name="nome"></td>
@@ -55,6 +55,17 @@
     </tr>
     <tr>
         <form action="/produtos" method="POST" th:object="${Produto}">
+
+
+
+            
+            
+
+
+
+            
+            
+
             <td></td>
             <td><input type="text" id="nome" name="nome" placeholder="Nome"></td>
             <td><input type="number" id="preco" step="0.01" name="preco" placeholder="Preco"></td>
@@ -62,5 +73,11 @@
         </form>
     </tr>
 </table>
+
+
+
+<div class="alert alert-danger" th:if="${produto}" th:errors="${produto.*}"></div>
+
+
 
 <div th:insert="fragments/footer :: modelfooter"></div>

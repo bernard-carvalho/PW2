@@ -181,15 +181,15 @@ public class VendaController {
     @GetMapping("cliente/{id}")
     public ModelAndView vendasDoCliente(@PathVariable("id") Long idCliente, ModelMap model){
         
-        List<Venda> vendas = repository.findAll();
-        List<Venda> clienteEspecifico = new ArrayList<>();
+        // List<Venda> vendas = repository.findAll();
+        // List<Venda> clienteEspecifico = new ArrayList<>();
 
-        for(int i=0; i<vendas.size();i++){
-            if(vendas.get(i).getCliente().getId().equals(idCliente))
-            {
-                clienteEspecifico.add(vendas.get(i));
-            }
-        }
+        // for(int i=0; i<vendas.size();i++){
+        //     if(vendas.get(i).getCliente().getId().equals(idCliente))
+        //     {
+        //         clienteEspecifico.add(vendas.get(i));
+        //     }
+        // }
         //model.addAttribute("vendas", clienteEspecifico);
         Cliente cliente = clienteRepository.findById(idCliente).get();
         model.addAttribute("vendas", cliente.getVendas());

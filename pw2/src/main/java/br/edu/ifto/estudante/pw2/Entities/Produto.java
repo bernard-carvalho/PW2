@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="tb_produto") //notação opcional que informa o nome da tabela a ser criada
@@ -19,8 +21,10 @@ public class Produto implements Serializable {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+        @NotBlank(message = "nome não pode ser nulo")
         private String nome;
 
+        @Min(value=0, message="preco deve ser superior a {1}")
         private Double preco;
 
     /*######################################
