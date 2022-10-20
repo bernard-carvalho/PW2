@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,19 +14,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import br.edu.ifto.estudante.pw2.Entities.Cliente;
 import br.edu.ifto.estudante.pw2.Entities.ClientePF;
 import br.edu.ifto.estudante.pw2.Entities.ItemVenda;
 import br.edu.ifto.estudante.pw2.Entities.Produto;
@@ -180,4 +176,20 @@ public class VendaController {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
+    
+    @GetMapping("cliente/{id}")
+    public ModelAndView vendasDoCliente(@PathVariable("id") Long idCliente, ModelMap model){
+        
+        List<Venda> vendas = repository.findAll();
+        List<Venda> clienteEspecifico = new ArrayList<>();
+
+        for(int i=0; i<vendas.size();i++){
+            if(vendas.get(i).getCliente().getId().equals(idCliente))
+            {
+                clienteEspecifico.add(vendas.get(i));
+            }
+        }
+        model.addAttribute("vendas", clienteEspecifico);
+        return new ModelAndView("/vendas/list",model);
+    } /**/
 }

@@ -8,15 +8,22 @@
         padding: 30px;
     }
 </style>
+<script>
+    function consultarVenda(argumento){
+        let id = argumento.value;
+        location.href="/vendas/cliente/"+id;
+    }
+</script>
 <table>
     <tr>
         <th>ID</th>
         <th>E-mail</th>
-        <th colspan="2">Ações</th>
+        <th colspan="3">Ações</th>
     </tr>
     <tr th:each="cliente : ${clientes}">
         <td><input readonly name="id" th:value="${cliente.id}"></td>
         <td><input name="email" th:value="${cliente.email}"></td>
+        <td><button th:value="${cliente.id}" onclick="consultarVenda(this)">Consultar Vendas</button></td>
         <td><button>Alterar</button></td>
         <td><button>Excluir</button></td>
     </tr>

@@ -9,6 +9,10 @@
     }
 </style>
 <script>
+    function consultarVenda(argumento){
+        let id = argumento.value;
+        location.href="/vendas/cliente/"+id;
+    }
     function alterar(botao){
         
         let cliente = {
@@ -56,6 +60,7 @@
         <td><input type="text" readonly th:value="${cliente.id}"></td>
         <td><input type="text" th:value="${cliente.email}"></td>
         <td><input type="text" th:value="${cliente.cpf}"></td>
+        <td><button th:value="${cliente.id}" onclick="consultarVenda(this)">Consultar Vendas</button></td>
         <td><button onclick="alterar(this)">Alterar</button></td>
         <td><button onclick="excluir(this)">Excluir</button></td>
     </tr>

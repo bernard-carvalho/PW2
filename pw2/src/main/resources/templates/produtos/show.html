@@ -1,5 +1,5 @@
 <div th:insert="fragments/header :: modelheader"></div>
-
+<!--
 <style>
     *{text-align: center;} .hidden{display:none;}
     table tr td input{
@@ -14,6 +14,7 @@
        background-color: #ddd; 
     }
 </style>
+-->
 <script>
     function comprar(botao){
         let div = botao.parentNode;
@@ -41,8 +42,7 @@
     }
 </script>
 
-<div class="container">
-    <div>
+<!-- <div class="container"> -->
       <div  th:each="produto : ${produtos}" class="col-sm-6">
             <input type="hidden" th:value="${produto.id}" name="id">
             <p>Nome do Produto</p><p></p><input th:value="${produto.nome}" name="nome" readonly></p>
@@ -50,7 +50,6 @@
             <p>Quantidade</p><p></p><input value="1" type="number" name="quantidade" min="1"></p>
             <button class="btn btn-primary" style="width:100%;" onclick="comprar(this)">COMPRAR</button>
       </div>
-    </div>
-</div>
+<!-- </div> -->
 
 <div th:insert="fragments/footer :: modelfooter"></div>

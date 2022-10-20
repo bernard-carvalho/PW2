@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -44,7 +45,7 @@ public class Venda implements Serializable {
         @JoinColumn(name="cod_venda") //nome da coluna
         private List<ItemVenda> itensVenda = new ArrayList<>();
 
-        @OneToOne
+        @ManyToOne
         @JoinColumn(name="cod_cliente")
         private Cliente cliente;
 

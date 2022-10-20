@@ -1,11 +1,14 @@
 package br.edu.ifto.estudante.pw2.Entities;
 
 
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -23,6 +26,9 @@ public abstract class Cliente {
         private Long id;
 
         private String email;
+
+        //@OneToMany(mappedBy = "Cliente")
+        //private ArrayList<Venda> vendas;
     
     /*######################################
      * CONSTRUTORES
