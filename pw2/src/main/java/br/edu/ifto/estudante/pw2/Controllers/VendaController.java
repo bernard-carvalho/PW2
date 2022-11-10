@@ -146,9 +146,11 @@ public class VendaController {
             venda.getItensVenda()==null ||
             venda.getItensVenda().size()==0
             ){
-            return new ResponseEntity<Venda>(HttpStatus.NOT_FOUND);
+            
+            return new ResponseEntity<Venda>(carrinho, HttpStatus.BAD_REQUEST);
         }       
         repository.save(venda);
+        session.invalidate();
         return new ResponseEntity<Venda>(carrinho,HttpStatus.CREATED);
     }
 
