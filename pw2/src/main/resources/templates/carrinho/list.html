@@ -34,20 +34,28 @@
         xhr.send(JSON.stringify(produto));
     }
     function vender(objeto){
-        let cliente = {
-            id:objeto.parentNode.querySelectorAll("select")[0].value,
-            email:objeto.parentNode.querySelectorAll("select")[0].options[objeto.parentNode.querySelectorAll("select")[0].selectedIndex].text
-        }
-        console.log(cliente);
-        let url="/vendas/carrinho/finalizar";
+        let clientePF = { id:objeto.parentNode.querySelectorAll("select")[0].value };
+        console.log(clientePF);
+        let url="/vendas/carrinho/cliente";
         xhr=new XMLHttpRequest;
-        xhr.open("POST",url,true);
-        xhr.onload=function(){
-            console.log(xhr.status)
-            if(xhr.status)
+        xhr.open("PUT",url,true);
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4 && xhr.status==201){
+                finalizarVenda();
+            }
         }
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify(cliente));
+        xhr.send(JSON.stringify(clientePF));
+    }
+    function finalizarVenda(){
+        let url = "/vendas/carrinho/finalizar"
+        xhr = new XMLHttpRequest;
+        xhr.open("POST",url,true);
+        xhr.onreadystatechange=function(){
+            console.log("ReadyState:"+xhr.readyState+"\nXhr.status:"+xhr.status);
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send();
     }
 
 </script>

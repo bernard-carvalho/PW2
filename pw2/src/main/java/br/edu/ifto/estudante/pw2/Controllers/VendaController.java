@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -112,35 +114,42 @@ public class VendaController {
         return new RedirectView("/");
     }
 
-    @PostMapping("/carrinho/finalizar")
-    public RedirectView finalizarVenda(ModelMap model, @RequestBody ClientePF cliente, BindingResult result,HttpSession sessao, RedirectAttributes atributos){
-        ClientePF cliente2 = clientePFRepository.findById(cliente.getId()).get();
-        
+    @PutMapping("/carrinho/cliente")
+    public ResponseEntity<ClientePF> updateCliente(@RequestBody ClientePF cliente, ModelMap model) {
+        Optional<ClientePF> cliente2 = clientePFRepository.findById(cliente.getId());
 
-        List<String> erros =  new ArrayList<>();
-        if(carrinho.getItensVenda().size()==0){
-            System.out.println("\nENTROU AQUI\n");
-            erros.add("Venda vazia não será realizada");
-            System.out.println(erros.size());
+        if(cliente2.isPresent())
+        {
+
+            System.out.println("\nCLIENTE ALTERADO\n");
+            ClientePF novoCliente = cliente2.get();
+            carrinho.setCliente(novoCliente);
+
+            ClientePF clienteRetornado = clientePFRepository.findById(cliente.getId()).get();
+            //clienteRetornado.setVendas(null);
+            
+
+            return new ResponseEntity<ClientePF>(clienteRetornado, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<ClientePF>(new ClientePF(), HttpStatus.NOT_FOUND);
         }
-        if(result.hasErrors()){
-            for(int i=0;i<result.getErrorCount();i++){
-                System.out.println("encontrado erro no campo: "+result.getFieldErrors().get(i).getField());
-                if(!"CPF".equals(result.getFieldErrors().get(i).getField()))
-                    erros.add(result.getAllErrors().get(i).getDefaultMessage().toString());
-            }
-        }
-        if(erros.size()!=0){
-            System.out.println("\n\nTAMBEM ENTROU AQUI");
-            System.out.println(erros.size());
-            System.out.println(erros);
-            atributos.addFlashAttribute("erros",erros);
-            return new RedirectView("/vendas/carrinho");
-        }
-        carrinho.setCliente(cliente2);
-        repository.save(carrinho);
-        sessao.invalidate();
-        return new RedirectView("/");
+    }
+
+    @PostMapping("/carrinho/finalizar")
+    public ResponseEntity<Venda> finalizarVenda(HttpServletRequest request){      
+        var session = request.getSession();
+        
+        Venda venda = carrinho;
+        if(
+            venda.getCliente()==null ||
+            venda.getData()==null ||
+            venda.getItensVenda()==null ||
+            venda.getItensVenda().size()==0
+            ){
+            return new ResponseEntity<Venda>(HttpStatus.NOT_FOUND);
+        }       
+        repository.save(venda);
+        return new ResponseEntity<Venda>(carrinho,HttpStatus.CREATED);
     }
 
     @GetMapping

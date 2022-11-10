@@ -14,6 +14,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Cliente {
@@ -30,6 +32,7 @@ public abstract class Cliente {
         @NotBlank(message="Email nao pode estar em branco")
         private String email;
 
+        
         @OneToMany(mappedBy = "cliente")
         private List<Venda> vendas;
 

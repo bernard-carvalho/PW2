@@ -22,6 +22,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity //notação que identifica a classe como entidade, isto é, uma tabela deve ser criada no banco para representá-la
@@ -45,6 +47,7 @@ public class Venda implements Serializable {
         @JoinColumn(name="cod_venda") //nome da coluna
         private List<ItemVenda> itensVenda = new ArrayList<>();
 
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name="cod_cliente")
         private Cliente cliente;
