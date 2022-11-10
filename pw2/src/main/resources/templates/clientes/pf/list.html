@@ -48,7 +48,7 @@
         return false;
     }
 </script>
-
+<div class="container">
 <table>
     <tr>
         <th>Id</th>
@@ -76,5 +76,5 @@
 <div th:if="${erros}" th:each="erro : ${erros}" th:text="${erro}" 
 class="alert alert-danger"></div>
 
-
+</div>
 <div th:insert="fragments/footer :: modelfooter"></div>

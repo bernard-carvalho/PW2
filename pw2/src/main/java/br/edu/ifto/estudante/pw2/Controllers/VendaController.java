@@ -113,7 +113,7 @@ public class VendaController {
     }
 
     @PostMapping("/carrinho/finalizar")
-    public RedirectView finalizarVenda(ModelMap model, @RequestBody @Valid ClientePF cliente, BindingResult result,HttpSession sessao, RedirectAttributes atributos){
+    public RedirectView finalizarVenda(ModelMap model, @RequestBody ClientePF cliente, BindingResult result,HttpSession sessao, RedirectAttributes atributos){
         ClientePF cliente2 = clientePFRepository.findById(cliente.getId()).get();
         
 
@@ -125,6 +125,7 @@ public class VendaController {
         }
         if(result.hasErrors()){
             for(int i=0;i<result.getErrorCount();i++){
+                System.out.println("encontrado erro no campo: "+result.getFieldErrors().get(i).getField());
                 if(!"CPF".equals(result.getFieldErrors().get(i).getField()))
                     erros.add(result.getAllErrors().get(i).getDefaultMessage().toString());
             }
@@ -132,6 +133,7 @@ public class VendaController {
         if(erros.size()!=0){
             System.out.println("\n\nTAMBEM ENTROU AQUI");
             System.out.println(erros.size());
+            System.out.println(erros);
             atributos.addFlashAttribute("erros",erros);
             return new RedirectView("/vendas/carrinho");
         }
